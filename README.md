@@ -81,12 +81,11 @@ Module answers
 
     createAnswer(answer)
 
-/**
- * Crée une réponse dans la base de données.
- * 
- * @param {Object} answer - Réponse à insérer.
- * @returns {Object} - Réponse insérée avec ID MongoDB.
- */
+Crée une réponse dans la base de données.
+ 
+   paramètre  {Object} answer - Réponse à insérer.
+   returns {Object} - Réponse insérée avec ID MongoDB.
+ 
 async function createAnswer(answer) {
   const db = await connectDB();
   const collection = db.collection('answers');
@@ -96,14 +95,11 @@ async function createAnswer(answer) {
 
 getAnswer(id)
 
-javascript
+  Récupère une réponse par son ID.
+  
+   paramètre  {number} id - ID de la réponse.
+   returns {Object|null} - Réponse trouvée ou null.
 
-/**
- * Récupère une réponse par son ID.
- * 
- * @param {number} id - ID de la réponse.
- * @returns {Object|null} - Réponse trouvée ou null.
- */
 async function getAnswer(id) {
   const db = await connectDB();
   const collection = db.collection('answers');
@@ -112,15 +108,14 @@ async function getAnswer(id) {
 
 updateAnswer(id, updateData)
 
-javascript
 
-/**
- * Met à jour une réponse par son ID.
- * 
- * @param {number} id - ID de la réponse.
- * @param {Object} updateData - Données à mettre à jour.
- * @returns {boolean} - `true` si mis à jour, `false` sinon.
- */
+
+ Met à jour une réponse par son ID.
+  
+   paramètre  {number} id - ID de la réponse.
+   paramètre  {Object} updateData - Données à mettre à jour.
+   returns {boolean} - `true` si mis à jour, `false` sinon.
+
 async function updateAnswer(id, updateData) {
   const db = await connectDB();
   const collection = db.collection('answers');
@@ -130,14 +125,11 @@ async function updateAnswer(id, updateData) {
 
 deleteAnswer(id)
 
-javascript
+      Supprime une réponse par son ID.
+     
+       paramètre  {number} id - ID de la réponse.
+       returns {boolean} - `true` si supprimé, `false` sinon.
 
-    /**
-     * Supprime une réponse par son ID.
-     * 
-     * @param {number} id - ID de la réponse.
-     * @returns {boolean} - `true` si supprimé, `false` sinon.
-     */
     async function deleteAnswer(id) {
       const db = await connectDB();
       const collection = db.collection('answers');
@@ -149,14 +141,11 @@ Module questions
 
     createQuestion(question)
 
-    javascript
-
-/**
- * Crée une question dans la base de données.
- * 
- * @param {Object} question - Question à insérer.
- * @returns {Object} - Question insérée avec ID MongoDB.
- */
+Crée une question dans la base de données.
+ 
+    paramètre {Object} question - Question à insérer.
+    returns {Object} - Question insérée avec ID MongoDB.
+ 
 async function createQuestion(question) {
   const db = await connectDB();
   const collection = db.collection('questions');
@@ -166,14 +155,11 @@ async function createQuestion(question) {
 
 getQuestion(id)
 
-javascript
-
-/**
- * Récupère une question par son ID.
- * 
- * @param {number} id - ID de la question.
- * @returns {Object|null} - Question trouvée ou null.
- */
+ Récupère une question par son ID.
+ 
+   paramètre  {number} id - ID de la question.
+   returns {Object|null} - Question trouvée ou null.
+ 
 async function getQuestion(id) {
   const db = await connectDB();
   const collection = db.collection('questions');
@@ -182,15 +168,12 @@ async function getQuestion(id) {
 
 updateQuestion(id, updateData)
 
-javascript
+   Met à jour une question par son ID.
+ 
+   paramètre  {number} id - ID de la question.
+   paramètre  {Object} updateData - Données à mettre à jour.
+    returns {boolean} - `true` si mis à jour, `false` sinon.
 
-/**
- * Met à jour une question par son ID.
- * 
- * @param {number} id - ID de la question.
- * @param {Object} updateData - Données à mettre à jour.
- * @returns {boolean} - `true` si mis à jour, `false` sinon.
- */
 async function updateQuestion(id, updateData) {
   const db = await connectDB();
   const collection = db.collection('questions');
@@ -200,14 +183,11 @@ async function updateQuestion(id, updateData) {
 
 deleteQuestion(id)
 
-javascript
-
-    /**
-     * Supprime une question par son ID.
-     * 
-     * @param {number} id - ID de la question.
-     * @returns {boolean} - `true` si supprimé, `false` sinon.
-     */
+   Supprime une question par son ID.
+     
+      paramètre {number} id - ID de la question.
+      returns {boolean} - `true` si supprimé, `false` sinon.
+     
     async function deleteQuestion(id) {
       const db = await connectDB();
       const collection = db.collection('questions');
@@ -219,12 +199,11 @@ Module surveys
 
     createSurvey(survey)
 
-/**
- * Crée une enquête dans la base de données.
- * 
- * @param {Object} survey - Enquête à insérer.
- * @returns {Object} - Enquête insérée avec ID MongoDB.
- */
+    Crée une enquête dans la base de données.
+ 
+    paramètre  {Object} survey - Enquête à insérer.
+    returns {Object} - Enquête insérée avec ID MongoDB.
+ 
 async function createSurvey(survey) {
   const db = await connectDB();
   const collection = db.collection('surveys');
@@ -235,12 +214,11 @@ async function createSurvey(survey) {
 
 getSurvey(id)
 
-/**
- * Récupère une enquête par son ID.
- * 
- * @param {number} id - ID de l'enquête.
- * @returns {Object|null} - Enquête trouvée ou null.
- */
+   Récupère une enquête par son ID.
+ 
+    paramètre  {number} id - ID de l'enquête.
+    returns {Object|null} - Enquête trouvée ou null.
+ 
 async function getSurvey(id) {
   const db = await connectDB();
   const collection = db.collection('surveys');
@@ -249,13 +227,13 @@ async function getSurvey(id) {
 
 updateSurvey(id, updateData)
 
-/**
- * Met à jour une enquête par son ID.
- * 
- * @param {number} id - ID de l'enquête.
- * @param {Object} updateData - Données à mettre à jour.
- * @returns {boolean} - `true` si mis à jour, `false` sinon.
- */
+
+   Met à jour une enquête par son ID.
+  
+    paramètre  {number} id - ID de l'enquête.
+    paramètre {Object} updateData - Données à mettre à jour.
+    returns {boolean} - `true` si mis à jour, `false` sinon.
+ 
 async function updateSurvey(id, updateData) {
   const db = await connectDB();
   const collection = db.collection('surveys');
@@ -266,12 +244,12 @@ async function updateSurvey(id, updateData) {
 
 deleteSurvey(id)
 
-/**
- * Supprime une enquête par son ID.
- * 
- * @param {number} id - ID de l'enquête.
- * @returns {boolean} - `true` si supprimé, `false` sinon.
- */
+
+   Supprime une enquête par son ID.
+ 
+   paramètre  {number} id - ID de l'enquête.
+   returns {boolean} - `true` si supprimé, `false` sinon.
+ 
 async function deleteSurvey(id) {
   const db = await connectDB();
   const collection = db.collection('surveys');
