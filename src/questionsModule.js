@@ -1,61 +1,35 @@
-const { getDb } = require('./config/database');
+const { connectDB } = require('./config/database');
 
-function createQuestion(questionData) {
-  const db = getDb();
-  db.collection('questions').insertOne(questionData)
-    .then(result => {
-      console.log('Question créée avec l\'id:', result.insertedId);
-    })
-    .catch(err => {
-      console.error('Erreur lors de la création de la question:', err);
-    });
+async function createQuestion(question) {
+  const db = await connectDB();
+  const collection = db.collection('questions');
+  const result = await collection.insertOne(question);
+  return { ...question, id: result.insertedId };
 }
 
-function readQuestion(questionId) {
-  const db = getDb();
-  db.collection('questions').findOne({ id: questionId })
-    .then(question => {
-      if (question) {
-        console.log('Question trouvée:', question);
-      } else {
-        console.log('Aucune question trouvée avec l\'id:', questionId);
-      }
-    })
-    .catch(err => {
-      console.error('Erreur lors de la lecture de la question:', err);
-    });
+async function getQuestion(id) {
+  const db = await connectDB();
+  const collection = db.collection('questions');
+  return await collection.findOne({ id });
 }
 
-function updateQuestion(questionId, updateData) {
-  const db = getDb();
-  db.collection('questions').updateOne(
-    { id: questionId },
-    { $set: updateData }
-  )
-    .then(result => {
-      console.log('Question mise à jour:', result.modifiedCount > 0);
-    })
-    .catch(err => {
-      console.error('Erreur lors de la mise à jour de la question:', err);
-    });
+async function updateQuestion(id, updateData) {
+  const db = await connectDB();
+  const collection = db.collection('questions');
+  const result = await collection.updateOne({ id }, { $set: updateData });
+  return result.modifiedCount > 0;
 }
 
-
-function deleteQuestion(questionId) {
-  const db = getDb();
-  db.collection('questions').deleteOne({ id: questionId }, function(err, result) {
-    if (err) {
-      console.error('Erreur lors de la suppression de la question:', err);
-    } else {
-      console.log('Question supprimée:', result.deletedCount > 0);
-    }
-  });
+async function deleteQuestion(id) {
+  const db = await connectDB();
+  const collection = db.collection('questions');
+  const result = await collection.deleteOne({ id });
+  return result.deletedCount > 0;
 }
 
 module.exports = {
   createQuestion,
-  readQuestion,
+  getQuestion,
   updateQuestion,
   deleteQuestion
 };
-

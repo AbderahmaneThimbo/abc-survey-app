@@ -1,39 +1,20 @@
-/**
- * Ce fichier configure et établit la connexion à la DB MongoDB
- */
-
 const { MongoClient } = require('mongodb');
+
 const url = 'mongodb://localhost:27017';
 const dbName = 'survey_db';
+let db = null;
 
-
-const client = new MongoClient(url);
-
-let db; 
-
-client.connect()
-  .then(() => {
-    console.log('Connecté à MongoDB');
-    db = client.db(dbName); 
-  })
-  .catch(err => {
-    console.error('Erreur lors de la connexion à MongoDB:', err);
-  });
-
-function getDb() {
-  if (!db) {
-    throw new Error('La connexion à la base de données n\'est pas encore établie');
+async function connectDB() {
+  if (db) return db; 
+  try {
+    const client = await MongoClient.connect(url, { useUnifiedTopology: true });
+    console.log('Connected successfully to MongoDB server');
+    db = client.db(dbName);
+    return db;
+  } catch (error) {
+    console.error('Connection failed', error);
+    throw error;
   }
-  return db;
 }
 
-module.exports = { getDb };
-
-
-
-
-
-
-
-
-
+module.exports = { connectDB };

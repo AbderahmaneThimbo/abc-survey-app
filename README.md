@@ -45,7 +45,7 @@ Suivez ces étapes pour configurer le projet sur votre machine locale :
 
     db.createCollection("questions")
     db.createCollection("answers")
-    db.createCollection("enquete")
+    db.createCollection("surveys")
 
 5. **Configuration de la connexion à la base de données :**
 
@@ -55,195 +55,229 @@ Suivez ces étapes pour configurer le projet sur votre machine locale :
      
      const { MongoClient } = require('mongodb');
      const url = 'mongodb://localhost:27017';
-     const dbName = 'surveyDB';
+     const dbName = 'survey_db';
+     let db = null;
 
-     const client = new MongoClient(url);
-
-     let db;
-
-     client.connect()
-        .then(() => {
-          console.log('Connecté à MongoDB');
-            db = client.db(dbName); 
-        })
-        .catch(err => {
-           console.error('Erreur lors de la connexion à MongoDB:', err);
-        });
-
-     Exporter la connexion à la base de données
-
-    function getDb() {
-       if (!db) {
-            throw new Error('La connexion à la base de données n\'est pas encore établie');
+    async function connectDB() {
+      if (db) return db; 
+         try {
+         const client = await MongoClient.connect(url, { useUnifiedTopology: true });
+           console.log('Connected successfully to MongoDB server');
+            db = client.db(dbName);
+          return db;
+        } catch (error) {
+        console.error('Connection failed', error);
+         throw error;
        }
-        return db;
-    }
+      }
 
-    module.exports = { getDb };
+     module.exports = { connectDB };
+
 
     
 ##  Utilisation des opérations CRUD 
       
-    Module enquetesModule.js
+Module answers
 
-    Ce module gère les opérations CRUD pour les enquêtes.
+    createAnswer(answer)
+
+/**
+ * Crée une réponse dans la base de données.
+ * 
+ * @param {Object} answer - Réponse à insérer.
+ * @returns {Object} - Réponse insérée avec ID MongoDB.
+ */
+async function createAnswer(answer) {
+  const db = await connectDB();
+  const collection = db.collection('answers');
+  const result = await collection.insertOne(answer);
+  return { ...answer, id: result.insertedId };
+}
+
+getAnswer(id)
+
+javascript
+
+/**
+ * Récupère une réponse par son ID.
+ * 
+ * @param {number} id - ID de la réponse.
+ * @returns {Object|null} - Réponse trouvée ou null.
+ */
+async function getAnswer(id) {
+  const db = await connectDB();
+  const collection = db.collection('answers');
+  return await collection.findOne({ id });
+}
+
+updateAnswer(id, updateData)
+
+javascript
+
+/**
+ * Met à jour une réponse par son ID.
+ * 
+ * @param {number} id - ID de la réponse.
+ * @param {Object} updateData - Données à mettre à jour.
+ * @returns {boolean} - `true` si mis à jour, `false` sinon.
+ */
+async function updateAnswer(id, updateData) {
+  const db = await connectDB();
+  const collection = db.collection('answers');
+  const result = await collection.updateOne({ id }, { $set: updateData });
+  return result.modifiedCount > 0;
+}
+
+deleteAnswer(id)
+
+javascript
+
+    /**
+     * Supprime une réponse par son ID.
+     * 
+     * @param {number} id - ID de la réponse.
+     * @returns {boolean} - `true` si supprimé, `false` sinon.
+     */
+    async function deleteAnswer(id) {
+      const db = await connectDB();
+      const collection = db.collection('answers');
+      const result = await collection.deleteOne({ id });
+      return result.deletedCount > 0;
+    }
+
+Module questions
+
+    createQuestion(question)
+
+    javascript
+
+/**
+ * Crée une question dans la base de données.
+ * 
+ * @param {Object} question - Question à insérer.
+ * @returns {Object} - Question insérée avec ID MongoDB.
+ */
+async function createQuestion(question) {
+  const db = await connectDB();
+  const collection = db.collection('questions');
+  const result = await collection.insertOne(question);
+  return { ...question, id: result.insertedId };
+}
+
+getQuestion(id)
+
+javascript
+
+/**
+ * Récupère une question par son ID.
+ * 
+ * @param {number} id - ID de la question.
+ * @returns {Object|null} - Question trouvée ou null.
+ */
+async function getQuestion(id) {
+  const db = await connectDB();
+  const collection = db.collection('questions');
+  return await collection.findOne({ id });
+}
+
+updateQuestion(id, updateData)
+
+javascript
+
+/**
+ * Met à jour une question par son ID.
+ * 
+ * @param {number} id - ID de la question.
+ * @param {Object} updateData - Données à mettre à jour.
+ * @returns {boolean} - `true` si mis à jour, `false` sinon.
+ */
+async function updateQuestion(id, updateData) {
+  const db = await connectDB();
+  const collection = db.collection('questions');
+  const result = await collection.updateOne({ id }, { $set: updateData });
+  return result.modifiedCount > 0;
+}
+
+deleteQuestion(id)
+
+javascript
+
+    /**
+     * Supprime une question par son ID.
+     * 
+     * @param {number} id - ID de la question.
+     * @returns {boolean} - `true` si supprimé, `false` sinon.
+     */
+    async function deleteQuestion(id) {
+      const db = await connectDB();
+      const collection = db.collection('questions');
+      const result = await collection.deleteOne({ id });
+      return result.deletedCount > 0;
+    }
+
+Module surveys
+
+    createSurvey(survey)
+
+/**
+ * Crée une enquête dans la base de données.
+ * 
+ * @param {Object} survey - Enquête à insérer.
+ * @returns {Object} - Enquête insérée avec ID MongoDB.
+ */
+async function createSurvey(survey) {
+  const db = await connectDB();
+  const collection = db.collection('surveys');
+  const result = await collection.insertOne(survey);
+  return { ...survey, id: result.insertedId };
+}
 
 
-    createEnquete(enqueteData)
+getSurvey(id)
 
-    Description: Crée une nouvelle enquête dans la collection enquete.
+/**
+ * Récupère une enquête par son ID.
+ * 
+ * @param {number} id - ID de l'enquête.
+ * @returns {Object|null} - Enquête trouvée ou null.
+ */
+async function getSurvey(id) {
+  const db = await connectDB();
+  const collection = db.collection('surveys');
+  return await collection.findOne({ id });
+}
 
-    Paramètres:
-        enqueteData (Object): Les données de l'enquête à créer.
+updateSurvey(id, updateData)
 
-    Exemple:
-
-     function createEnquete(enqueteData)  {
-        
-      };
-    
-
-    readEnquete(enqueteId)
-
-    Description: Lit les détails d'une enquête spécifique à partir de la collection enquete.
-
-    Paramètres:
-        enqueteId (Number): L'ID de l'enquête à lire.
-
-    Exemple:
-
-        function readEnquete(enqueteId) {
-          
-       }; 
-
-    updateEnquete(enqueteId, updateData)
-
-    Description: Met à jour les détails d'une enquête dans la collection enquete.
-
-    Paramètres:
-        enqueteId (Number): L'ID de l'enquête à mettre à jour.
-        updateData (Object): Les données à mettre à jour.
-
-    Exemple:
-
-       function updateEnquete(enqueteId, updateData) {
-        
-     };
-     
-
-    deleteEnquete(enqueteId)
-
-    Description: Supprime une enquête de la collection enquete.
-
-    Paramètres:
-        enqueteId (Number): L'ID de l'enquête à supprimer.
-
-    Exemple:
-
-     function deleteEnquete(enqueteId) {
-     
-     };
-
-    Module questionsModule.js
-
-        Ce module gère les opérations CRUD pour les questions.
-
-       createQuestion(questionData)
-
-       Description: Crée une nouvelle question dans la collection questions.
-       Paramètres:
-          questionData (Object) : Les données de la question à créer.
-       Exemple:
-
-      function createQuestion(questionData) {
-      
-    };
+/**
+ * Met à jour une enquête par son ID.
+ * 
+ * @param {number} id - ID de l'enquête.
+ * @param {Object} updateData - Données à mettre à jour.
+ * @returns {boolean} - `true` si mis à jour, `false` sinon.
+ */
+async function updateSurvey(id, updateData) {
+  const db = await connectDB();
+  const collection = db.collection('surveys');
+  const result = await collection.updateOne({ id }, { $set: updateData });
+  return result.modifiedCount > 0;
+}
 
 
-   readQuestion(questionId)
+deleteSurvey(id)
 
-    Description: Lit les détails d'une question spécifique à partir de la collection questions.
-    Paramètres:
-        questionId (Number) : L'ID de la question à lire.
-    Exemple:
-
-    function readQuestion(questionId) {
-      
-      
-    };
-
-   updateQuestion(questionId, updateData)
-
-    Description: Met à jour les détails d'une question dans la collection questions.
-    Paramètres:
-        questionId (Number) : L'ID de la question à mettre à jour.
-        updateData (Object) : Les données à mettre à jour.
-    Exemple:
-
-    function updateQuestion(questionId, updateData) {
-      
-    };
-
-    deleteQuestion(questionId)
-
-    Description: Supprime une question de la collection questions.
-    Paramètres:
-        questionId (Number) : L'ID de la question à supprimer.
-    Exemple:
-
-    function deleteQuestion(questionId){
-  
-    }; 
-
-
-    Module answersModule.js
-
-       Ce module gère les opérations CRUD pour les réponses.
-
-       createAnswer(answerData)
-
-        Description: Crée une nouvelle réponse dans la collection answers.
-        Paramètres:
-        answerData (Object) : Les données de la réponse à créer.
-      Exemple:
-
-        function createAnswer(answerData){
-    
-        };
-
-     readAnswer(answerId)
-
-      Description: Lit les détails d'une réponse spécifique à partir de la collection answers.
-      Paramètres:
-        answerId (Number) : L'ID de la réponse à lire.
-      Exemple:
-
-       function readAnswer(answerId) {
-     
-      };
-
-    updateAnswer(answerId, updateData)
-
-    Description: Met à jour les détails d'une réponse dans la collection answers.
-    Paramètres:
-        answerId (Number) : L'ID de la réponse à mettre à jour.
-        updateData (Object) : Les données à mettre à jour.
-    Exemple:
-
-    function updateAnswer(answerId, updateData) {
-      
-    };
-
-    deleteAnswer(answerId)
-
-    Description: Supprime une réponse de la collection answers.
-    Paramètres:
-        answerId (Number) : L'ID de la réponse à supprimer.
-    Exemple:
-
-     function deleteAnswer(answerId)  {
-  
-      };
+/**
+ * Supprime une enquête par son ID.
+ * 
+ * @param {number} id - ID de l'enquête.
+ * @returns {boolean} - `true` si supprimé, `false` sinon.
+ */
+async function deleteSurvey(id) {
+  const db = await connectDB();
+  const collection = db.collection('surveys');
+  const result = await collection.deleteOne({ id });
+  return result.deletedCount > 0;
+}
 
 
 ## Utilisation
