@@ -1,123 +1,140 @@
-#Survey App
+# Survey App
 
-Description
+## Description
 
 Survey App est une application JavaScript simple permettant de gérer les fiches d'enquête de satisfaction des clients. L'application utilise une base de données MongoDB pour stocker les données et permet d'effectuer des opérations CRUD (Create, Read, Update, Delete) sur ces fiches.
-Prérequis
+
+## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
     Node.js (version 12 ou supérieure)
     MongoDB (version 4.0 ou supérieure)
 
-Installation
+## Installation
 
 Suivez ces étapes pour configurer le projet sur votre machine locale :
 
-    Clonez le repository :
+**Clonez le repository :**
 
-    bash
+```bash
+git clone <https://github.com/AbderahmaneThimbo/abc-survey-app.git>
+```
 
-git clone <URL_DU_REPOSITORY>
+**Accédez au dossier du projet :**
 
-Accédez au dossier du projet :
+```bash
+  cd abc-survey-app
+```
 
-bash
+**Installez les dépendances :**
 
-cd abc-survey-app
+```bash
+   npm install
+```
 
-Installez les dépendances :
+## Configuration 
 
-bash
+**Créez la base de données et les collections:**
 
-    npm install
+Connectez-vous à MongoDB et exécutez les commandes pour créer la base de données survey_db ainsi que les collections questions, answers, et surveys.
+    
+**Configuration de la connexion à la base de données :**
+Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
+La connexion à la base de données se fait via un fichier config/database.js, qui contient la logique nécessaire pour se connecter à MongoDB.
 
-    Créez la base de données et les collections:
-        Connectez-vous à MongoDB et exécutez les commandes pour créer la base de données survey_db ainsi que les collections questions, answers, et surveys.
+## Fonctionnalités
 
-    Configuration de la connexion à la base de données :
-        Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
-        La connexion à la base de données se fait via un fichier config/database.js, qui contient la logique nécessaire pour se connecter à MongoDB.
+### Module answers
 
-Utilisation des opérations CRUD
-Module answers
+**createAnswer(answer)**
+Crée une réponse dans la base de données.
+Paramètre : (id {int},
+             title {string},
+             questionId {int})
+Retourne : Reponse insérée avec succès..
 
-    createAnswer(answer)
-    Crée une réponse dans la base de données.
-        Paramètre : {Object} answer - Réponse à insérer.
-        Retourne : {Object} - Réponse insérée avec ID MongoDB.
+**getAnswer(id)**
+Récupère une réponse par son ID.
+Paramètre :  (id {int})
+Retourne : Reponse correspondant à l'ID fourni.
 
-    getAnswer(id)
-    Récupère une réponse par son ID.
-        Paramètre : {int} id - ID de la réponse.
-        Retourne : {Object|null} - Réponse trouvée ou null.
+**updateAnswer(id, updateData)**
+Met à jour une réponse par son ID.
+Paramètre : (id {int},
+            title {string})
+Retourne : Reponse mise à jour avec succès ou reponse non retouvé.
 
-    updateAnswer(id, updateData)
-    Met à jour une réponse par son ID.
-        Paramètre : {int} id - ID de la réponse.
-        Paramètre : {Object} updateData - Données à mettre à jour.
-        Retourne : {boolean} - true si mis à jour, false sinon.
+**deleteAnswer(id)**
+Supprime une réponse par son ID.
+Paramètre : (id {int} )
+Retourne : Reponse supprimée avec succès ou reponse non retrouvé.
 
-    deleteAnswer(id)
-    Supprime une réponse par son ID.
-        Paramètre : {int} id - ID de la réponse.
-        Retourne : {boolean} - true si supprimé, false sinon.
+### Module questions
 
-Module questions
+**createQuestion(question)**
+Crée une question dans la base de données.
+Paramètre : ({id {int},
+              title {string},
+              type {string}, 
+              surveyId {int}
+              answer [ id {int}, titele {string} } ]).
+Retourne : Question insérée avec succès.
 
-    createQuestion(question)
-    Crée une question dans la base de données.
-        Paramètre : {Object} question - Question à insérer.
-        Retourne : {Object} - Question insérée avec ID MongoDB.
+**getQuestion(id)**
+Récupère une question par son ID.
+Paramètre : 
+         ({ id {int} })
+Retourne : Question correspondant à l'ID fourni.
 
-    getQuestion(id)
-    Récupère une question par son ID.
-        Paramètre : {int} id - ID de la question.
-        Retourne : {Object|null} - Question trouvée ou null.
+**updateQuestion(id, updateData)**
+Met à jour une question par son ID.
+Paramètre : 
+        ({ id {int},
+          title {string} })
+Retourne : Question mise à jour avec succès ou Question non retouvé.
 
-    updateQuestion(id, updateData)
-    Met à jour une question par son ID.
-        Paramètre : {int} id - ID de la question.
-        Paramètre : {Object} updateData - Données à mettre à jour.
-        Retourne : {boolean} - true si mis à jour, false sinon.
+**deleteQuestion(id)**
+Supprime une question par son ID.
+Paramètre : ({ id {int} })
+Retourne : Question supprimée avec succès ou Question non retrouvé.
 
-    deleteQuestion(id)
-    Supprime une question par son ID.
-        Paramètre : {int} id - ID de la question.
-        Retourne : {boolean} - true si supprimé, false sinon.
+### Module surveys
 
-Module surveys
+**createSurvey(survey)**
+Crée une enquête dans la base de données.
+Paramètre : 
+   ( { id {int},
+   name {string}, 
+   description {string}, 
+   creatdAt {Date}, 
+   createdBy [nameEmploye  {string} role {string} ] } )
+Retourne : Enquête insérée avec succès.
 
-    createSurvey(survey)
-    Crée une enquête dans la base de données.
-        Paramètre : {Object} survey - Enquête à insérer.
-        Retourne : {Object} - Enquête insérée avec ID MongoDB.
+**getSurvey(id)**
+Récupère une enquête par son ID.
+Paramètre : {id {int} }.
+Retourne : Enquête correspondant à l'ID fourni.
 
-    getSurvey(id)
-    Récupère une enquête par son ID.
-        Paramètre : {int} id - ID de l'enquête.
-        Retourne : {Object|null} - Enquête trouvée ou null.
+**updateSurvey(id, updateData)**
+Met à jour une enquête par son ID.
+Paramètre : {id {int} }.
+Paramètre : description {string}.
+Retourne : Enquête mise à jour avec succès Enquête non retrouvé.
 
-    updateSurvey(id, updateData)
-    Met à jour une enquête par son ID.
-        Paramètre : {int} id - ID de l'enquête.
-        Paramètre : {Object} updateData - Données à mettre à jour.
-        Retourne : {boolean} - true si mis à jour, false sinon.
+**deleteSurvey(id)**
+Supprime une enquête par son ID.
+Paramètre : {id {int} }.
+Retourne : Enquête supprimée avec succès ou Enquête non retrouvé.
 
-    deleteSurvey(id)
-    Supprime une enquête par son ID.
-        Paramètre : {int} id - ID de l'enquête.
-        Retourne : {boolean} - true si supprimé, false sinon.
-
-Utilisation
+## Utilisation
 
 Pour démarrer l'application, exécutez la commande suivante :
 
-bash
+```bash
+  npm start
+```
+## Auteur
 
-npm start
-
-Auteurs
-
-Abderahmane Thimbo
+[Abderahmane Thimbo](https://github.com/AbderahmaneThimbo)
 
