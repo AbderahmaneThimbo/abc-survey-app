@@ -7,7 +7,7 @@ let db = null;
 async function connectDB() {
   if (db) return db; 
   try {
-    const client = await MongoClient.connect(url, { useUnifiedTopology: true });
+    const client = await MongoClient.connect(url);
     console.log('Connected successfully to MongoDB server');
     db = client.db(dbName);
     return db;
