@@ -5,10 +5,12 @@ async function createSurvey(survey) {
   const collection = db.collection('surveys');
   const existingSurvey = await collection.findOne({ id: survey.id });
   if (existingSurvey) {
+    console.log("Survey already exists.");
     return "Survey already exists.";
   }
   const result = await collection.insertOne(survey);
-  return { ...survey, id: result.insertedId }; 
+  console.log("Survey created:", { ...survey, id: result.insertedId });
+  return { ...survey, id: result.insertedId };
 }
 
 async function getSurvey(id) {
@@ -16,8 +18,10 @@ async function getSurvey(id) {
   const collection = db.collection('surveys');
   const survey = await collection.findOne({ id });
   if (!survey) {
+    console.log("Survey not found.");
     return "Survey not found.";
   }
+  console.log("Survey fetched:", survey);
   return survey;
 }
 
@@ -26,10 +30,13 @@ async function updateSurvey(id, updateData) {
   const collection = db.collection('surveys');
   const existingSurvey = await collection.findOne({ id });
   if (!existingSurvey) {
+    console.log("Survey not found.");
     return "Survey not found.";
   }
   const result = await collection.updateOne({ id }, { $set: updateData });
-  return result.modifiedCount > 0 ? "Survey updated successfully." : "No changes made.";
+  const message = result.modifiedCount > 0 ? "Survey updated successfully." : "No changes made.";
+  console.log(message);
+  return message;
 }
 
 async function deleteSurvey(id) {
@@ -37,10 +44,13 @@ async function deleteSurvey(id) {
   const collection = db.collection('surveys');
   const existingSurvey = await collection.findOne({ id });
   if (!existingSurvey) {
-    return "Survey not found";
+    console.log("Survey not found.");
+    return "Survey not found.";
   }
   const result = await collection.deleteOne({ id });
-  return result.deletedCount > 0 ? "Survey deleted successfully." : "Failed to delete survey.";
+  const message = result.deletedCount > 0 ? "Survey deleted successfully." : "Failed to delete survey.";
+  console.log(message);
+  return message;
 }
 
 module.exports = {

@@ -18,14 +18,5 @@ async function connectDB() {
   }
 }
 
-async function closeConnection() {
-  if (client) {
-    await client.close();
-    console.log('MongoDB connection closed');
-    client = null;
-    db = null;
-  }
-}
-
-module.exports = { connectDB, closeConnection };
+module.exports = { connectDB };
 

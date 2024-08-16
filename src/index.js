@@ -1,37 +1,30 @@
 const surveysModule = require('./surveysModule');
 const questionsModule = require('./questionsModule');
 const answersModule = require('./answersModule');
-const { connectDB, closeConnection } = require('./config/database');
 
 async function runTests() {
   try {
-    await connectDB(); 
-
-    console.log('Testing Surveys Module');
-    const newSurvey = await surveysModule.createSurvey({
-      id: 1,
+   
+    await surveysModule.createSurvey({
+      id: 3,
       name: 'Enquête de Satisfaction 003',
       description: 'Troisième enquête de satisfaction',
       createdAt: new Date(),
       createdBy: { employeeName: 'Abderahmane', employeeRole: 'Analyste' }
     });
-    console.log('Survey created:', newSurvey);
 
-    const survey = await surveysModule.getSurvey(10);
-    console.log('Survey fetched:', survey);
+    await surveysModule.getSurvey(3);
 
-    const updatedSurvey = await surveysModule.updateSurvey(5, { description: 'Mise à jour de l\'enquête' });
-    console.log('Survey updated:', updatedSurvey);
+    await surveysModule.updateSurvey(3, { description: 'Mise à jour de l\'enquête' });
 
-    const deletedSurvey = await surveysModule.deleteSurvey(10);
-    console.log('Survey deleted:', deletedSurvey);
+    await surveysModule.deleteSurvey(1);
 
-    console.log('Testing Questions Module');
-    const newQuestion = await questionsModule.createQuestion({
-      id: 10,
+
+    await questionsModule.createQuestion({
+      id: 1,
       title: 'Quel est votre produit préféré ?',
       type: 'singleChoice',
-      surveyId: 1,
+      surveyId: 3,
       options: null,
       allowMultipleSelections: false,
       answers: [
@@ -39,42 +32,29 @@ async function runTests() {
         { id: 2, title: 'Produit B' }
       ]
     });
-    console.log('Question created:', newQuestion);
 
-    const question = await questionsModule.getQuestion(1);
-    console.log('Question fetched:', question);
+    await questionsModule.getQuestion(1);
 
-    const updatedQuestion = await questionsModule.updateQuestion(1, { title: 'Quel est votre produit préféré maintenant ?' });
-    console.log('Question updated:', updatedQuestion);
+    await questionsModule.updateQuestion(1, { title: 'Quel est votre produit préféré maintenant ?' });
 
-    const deletedQuestion = await questionsModule.deleteQuestion(1);
-    console.log('Question deleted:', deletedQuestion);
+    await questionsModule.deleteQuestion(1);
 
-    console.log('Testing Answers Module');
-    const newAnswer = await answersModule.createAnswer({
-      id: 10,
+   
+    await answersModule.createAnswer({
+      id: 2,
       title: 'Très satisfait',
       questionId: 1
     });
-    console.log('Answer created:', newAnswer);
 
-    const answer = await answersModule.getAnswer(1);
-    console.log('Answer fetched:', answer);
+    await answersModule.getAnswer(2);
 
-    const updatedAnswer = await answersModule.updateAnswer(1, { title: 'Satisfait' });
-    console.log('Answer updated:', updatedAnswer);
+    await answersModule.updateAnswer(2, { title: 'Satisfait' });
 
-    const deletedAnswer = await answersModule.deleteAnswer(1);
-    console.log('Answer deleted:', deletedAnswer);
+    await answersModule.deleteAnswer(2);
 
   } catch (err) {
     console.error('Error:', err);
-  } finally {
-    await closeConnection();
-    console.log('Connexion fermée');
   }
 }
 
 runTests();
-
-

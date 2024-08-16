@@ -45,87 +45,157 @@ La connexion à la base de données se fait via un fichier config/database.js, q
 
 ## Fonctionnalités
 
-### Module answers
-
-**createAnswer(answer)**
-Crée une réponse dans la base de données.
-Paramètre : (id {int},
-             title {string},
-             questionId {int})
-Retourne : Reponse insérée avec succès..
-
-**getAnswer(id)**
-Récupère une réponse par son ID.
-Paramètre :  (id {int})
-Retourne : Reponse correspondant à l'ID fourni.
-
-**updateAnswer(id, updateData)**
-Met à jour une réponse par son ID.
-Paramètre : (id {int},
-            title {string})
-Retourne : Reponse mise à jour avec succès ou reponse non retouvé.
-
-**deleteAnswer(id)**
-Supprime une réponse par son ID.
-Paramètre : (id {int} )
-Retourne : Reponse supprimée avec succès ou reponse non retrouvé.
-
-### Module questions
-
-**createQuestion(question)**
-Crée une question dans la base de données.
-Paramètre : ({id {int},
-              title {string},
-              type {string}, 
-              surveyId {int}
-              answer [ id {int}, titele {string} } ]).
-Retourne : Question insérée avec succès.
-
-**getQuestion(id)**
-Récupère une question par son ID.
-Paramètre : 
-         ({ id {int} })
-Retourne : Question correspondant à l'ID fourni.
-
-**updateQuestion(id, updateData)**
-Met à jour une question par son ID.
-Paramètre : 
-        ({ id {int},
-          title {string} })
-Retourne : Question mise à jour avec succès ou Question non retouvé.
-
-**deleteQuestion(id)**
-Supprime une question par son ID.
-Paramètre : ({ id {int} })
-Retourne : Question supprimée avec succès ou Question non retrouvé.
 
 ### Module surveys
 
 **createSurvey(survey)**
+
 Crée une enquête dans la base de données.
-Paramètre : 
-   ( { id {int},
-   name {string}, 
-   description {string}, 
-   creatdAt {Date}, 
-   createdBy [nameEmploye  {string} role {string} ] } )
-Retourne : Enquête insérée avec succès.
+
+createSurvey( {id : int, name : string, description : string,  createdAt : Date, createdBy : [ {employeeName : string, employeeRole :string} ] } ) 
+
+Retourne :
+
+  "Enquête insérée avec succès." : Si l'enquête a été créée avec succès.
+
+  "Enquête exist." : Si une enquête avec le même ID existe déjà.
 
 **getSurvey(id)**
+
 Récupère une enquête par son ID.
-Paramètre : {id {int} }.
-Retourne : Enquête correspondant à l'ID fourni.
+
+getSurvey(id : int).
+
+Retourne :
+
+  "L'objet enquête correspondant à l'ID fourni.
+
+  "Enquête  non retrouvée." : Si aucune enquête n'est trouvée avec l'ID donné.
 
 **updateSurvey(id, updateData)**
+
 Met à jour une enquête par son ID.
-Paramètre : {id {int} }.
-Paramètre : description {string}.
-Retourne : Enquête mise à jour avec succès Enquête non retrouvé.
+
+updateSurvey(id : int, {name : string, description : string,  createdAt : Date, createdBy : [ {employeeName : string, employeeRole :string} ]})
+
+Retourne :
+
+  "Enquête mise à jour avec succès." : Si la mise à jour a été effectuée avec succès.
+
+  "Enquête non retrouvée." : Si aucune enquête n'est trouvée avec l'ID donné.
 
 **deleteSurvey(id)**
+
 Supprime une enquête par son ID.
-Paramètre : {id {int} }.
-Retourne : Enquête supprimée avec succès ou Enquête non retrouvé.
+
+deleteSurvey(id : int)
+
+Retourne :
+
+  "Enquête supprimée avec succès." : Si la suppression a été effectuée avec succès.
+
+  "Enquête  non retrouvée." : Si aucune enquête n'est trouvée avec l'ID donné.
+
+### Module questions
+
+**createQuestion(question)**
+
+Crée une question dans la base de données.
+
+createQuestion({id : int, title : string, type : string,  surveyId : int, answers :  [ {id : int, title : string} ]})
+
+Retourne :
+
+  "Question insérée avec succès." : Si la question a été créée avec succès.
+
+  "Question  exist déja." : Si une question avec le même ID existe déjà.
+
+**getQuestion(id)**
+
+Récupère une question par son ID.
+
+getQuestion(id : int)
+
+Retourne :
+
+  "L'objet question correspondant à l'ID fourni.
+
+  "Question n'exist pas.": Si aucune question n'est trouvée avec l'ID donné.
+
+**updateQuestion(id, updateData)**
+
+Met à jour une question par son ID.
+
+updateQuestion(id : int, {title : string, type : string,  surveyId : int, answers : [ {id : int, title :string} ]})
+
+Retourne :
+
+  "Question mise à jour avec succès." : Si la mise à jour a été effectuée avec succès.
+
+  "Question  non retrouvée." : Si aucune question n'est trouvée avec l'ID donné.
+
+**deleteQuestion(id)**
+
+Supprime une question par son ID.
+
+deleteQuestion(id : int)
+
+Retourne :
+
+  "Question supprimée avec succès." : Si la suppression a été effectuée avec succès.
+
+  "Question  non retrouvée." : Si aucune question n'est trouvée avec l'ID donné.
+
+### Module answers
+
+**createAnswer(answer)**
+
+Crée une réponse dans la base de données.
+
+createAnswer({id : int, title : string, questionId : int})
+
+Retourne :
+
+  "Réponse insérée avec succès." : Si la réponse a été créée avec succès.
+
+  "Answer exist déja." : Si une réponse avec le même ID existe déjà.
+
+**getAnswer(id)**
+
+Récupère une réponse par son ID.
+
+getAnswer(id : int)
+
+Retourne :
+
+  L'objet réponse correspondant à l'ID fourni.
+
+  "Réponse non trouvée." : Si aucune réponse n'est trouvée avec l'ID donné.
+
+**updateAnswer(id, updateData)**
+
+Met à jour une réponse par son ID.
+
+updateAnswer(id : int, {title : string, questionId : int})
+
+Retourne :
+
+  "Réponse mise à jour avec succès." : Si la mise à jour a été effectuée avec succès.
+
+  "Réponse non trouvée." : Si aucune réponse n'est trouvée avec l'ID donné.
+
+**deleteAnswer(id)**
+
+Supprime une réponse par son ID.
+
+deleteAnswer(id : int)
+
+Retourne :
+
+  "Réponse supprimée avec succès." : Si la suppression a été effectuée avec succès.
+  
+  "Réponse non trouvée." : Si aucune réponse n'est trouvée avec l'ID donné.
+
 
 ## Utilisation
 
