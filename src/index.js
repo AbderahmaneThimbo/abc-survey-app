@@ -1,17 +1,19 @@
 const surveysModule = require('./surveysModule');
 const questionsModule = require('./questionsModule');
 const answersModule = require('./answersModule');
+const { connectDB, closeConnection } = require('./config/database');
 
 async function runTests() {
   try {
-  
+    await connectDB(); 
+
     console.log('Testing Surveys Module');
     const newSurvey = await surveysModule.createSurvey({
       id: 1,
       name: 'Enquête de Satisfaction 003',
       description: 'Troisième enquête de satisfaction',
       createdAt: new Date(),
-      createdBy: { employeeName: 'Abderahamn', employeeRole: 'Analyste' }
+      createdBy: { employeeName: 'Abderahmane', employeeRole: 'Analyste' }
     });
     console.log('Survey created:', newSurvey);
 
@@ -24,7 +26,6 @@ async function runTests() {
     const deletedSurvey = await surveysModule.deleteSurvey(10);
     console.log('Survey deleted:', deletedSurvey);
 
-    
     console.log('Testing Questions Module');
     const newQuestion = await questionsModule.createQuestion({
       id: 10,
@@ -49,7 +50,6 @@ async function runTests() {
     const deletedQuestion = await questionsModule.deleteQuestion(1);
     console.log('Question deleted:', deletedQuestion);
 
-  
     console.log('Testing Answers Module');
     const newAnswer = await answersModule.createAnswer({
       id: 10,
@@ -69,8 +69,12 @@ async function runTests() {
 
   } catch (err) {
     console.error('Error:', err);
+  } finally {
+    await closeConnection();
+    console.log('Connexion fermée');
   }
 }
 
 runTests();
+
 
