@@ -84,15 +84,16 @@ Met à jour une enquête par son ID.
 
 ```javascript
 updateSurvey(
-     id : int, 
-    {name : string,
+     id : int,{
+     name : string,
      description : string, 
      createdAt : Date,
      createdBy : [ {
         employeeName : string, 
         employeeRole :string
    }]
-})
+ }
+)
 ````
 
 #### **deleteSurvey(id)**
@@ -146,7 +147,8 @@ updateQuestion(
         id : int, 
         title :string
   }]
-})
+ }
+)
 ````
 
 #### **deleteQuestion(id)**
