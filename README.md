@@ -32,169 +32,170 @@ git clone <https://github.com/AbderahmaneThimbo/abc-survey-app.git>
 ```bash
    npm install
 ```
-
 ## Configuration 
 
-**Créez la base de données et les collections:**
+### **Créez la base de données et les collections :**
 
-Connectez-vous à MongoDB et exécutez les commandes pour créer la base de données survey_db ainsi que les collections questions, answers, et surveys.
-    
-**Configuration de la connexion à la base de données :**
+Connectez-vous à MongoDB et exécutez les commandes pour créer la base de données `survey_db` ainsi que les collections `questions`, `answers`, et `surveys`.
+
+---
+
+### **Configuration de la connexion à la base de données :**
+
 Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
-La connexion à la base de données se fait via un fichier config/database.js, qui contient la logique nécessaire pour se connecter à MongoDB.
+
+La connexion à la base de données se fait via un fichier `config/database.js`, qui contient la logique nécessaire pour se connecter à MongoDB.
+
+---
 
 ## Fonctionnalités
 
+### Module **surveys**
 
-### Module surveys
 
-**createSurvey(survey)**
+#### **createSurvey(survey)**
 
 Crée une enquête dans la base de données.
 
-createSurvey( {id : int, name : string, description : string,  createdAt : Date, createdBy : [ {employeeName : string, employeeRole :string} ] } ) 
+```javascript
+createSurvey({ 
+  id: int, 
+  name: string, 
+  description: string,  
+  createdAt: Date, 
+  createdBy: [{ 
+    employeeName: string, 
+    employeeRole: string 
+  }] 
+})
+````
 
-Retourne :
+#### **getSurvey(id)**
 
-  "Enquête insérée avec succès." : Si l'enquête a été créée avec succès.
-
-  "Enquête exist." : Si une enquête avec le même ID existe déjà.
-
-**getSurvey(id)**
 
 Récupère une enquête par son ID.
+```javascript
+getSurvey(id : int)
+````
 
-getSurvey(id : int).
-
-Retourne :
-
-  "L'objet enquête correspondant à l'ID fourni.
-
-  "Enquête  non retrouvée." : Si aucune enquête n'est trouvée avec l'ID donné.
-
-**updateSurvey(id, updateData)**
+#### **updateSurvey(id, updateData)**
 
 Met à jour une enquête par son ID.
 
-updateSurvey(id : int, {name : string, description : string,  createdAt : Date, createdBy : [ {employeeName : string, employeeRole :string} ]})
+```javascript
+updateSurvey(
+     id : int, 
+    {name : string,
+     description : string, 
+     createdAt : Date,
+     createdBy : [ {
+        employeeName : string, 
+        employeeRole :string
+   }]
+})
+````
 
-Retourne :
-
-  "Enquête mise à jour avec succès." : Si la mise à jour a été effectuée avec succès.
-
-  "Enquête non retrouvée." : Si aucune enquête n'est trouvée avec l'ID donné.
-
-**deleteSurvey(id)**
+#### **deleteSurvey(id)**
 
 Supprime une enquête par son ID.
 
+```javascript
 deleteSurvey(id : int)
+````
 
-Retourne :
 
-  "Enquête supprimée avec succès." : Si la suppression a été effectuée avec succès.
+### Module **questions**
 
-  "Enquête  non retrouvée." : Si aucune enquête n'est trouvée avec l'ID donné.
-
-### Module questions
-
-**createQuestion(question)**
+#### **createQuestion(question)**
 
 Crée une question dans la base de données.
 
-createQuestion({id : int, title : string, type : string,  surveyId : int, answers :  [ {id : int, title : string} ]})
+```javascript
+createQuestion({
+      id : int,
+      title : string,
+      type : string,  
+      surveyId : int, 
+      answers :  [{
+         id : int, 
+         title : string
+  }]
+})
+````
 
-Retourne :
-
-  "Question insérée avec succès." : Si la question a été créée avec succès.
-
-  "Question  exist déja." : Si une question avec le même ID existe déjà.
-
-**getQuestion(id)**
+#### **getQuestion(id)**
 
 Récupère une question par son ID.
 
+```javascript
 getQuestion(id : int)
-
+````
 Retourne :
 
-  "L'objet question correspondant à l'ID fourni.
 
-  "Question n'exist pas.": Si aucune question n'est trouvée avec l'ID donné.
-
-**updateQuestion(id, updateData)**
+#### **updateQuestion(id, updateData)**
 
 Met à jour une question par son ID.
+```javascript
+updateQuestion(
+   id : int, {
+     title : string, 
+     type : string,  
+     surveyId : int, 
+     answers : [{
+        id : int, 
+        title :string
+  }]
+})
+````
 
-updateQuestion(id : int, {title : string, type : string,  surveyId : int, answers : [ {id : int, title :string} ]})
-
-Retourne :
-
-  "Question mise à jour avec succès." : Si la mise à jour a été effectuée avec succès.
-
-  "Question  non retrouvée." : Si aucune question n'est trouvée avec l'ID donné.
-
-**deleteQuestion(id)**
+#### **deleteQuestion(id)**
 
 Supprime une question par son ID.
-
+```javascript
 deleteQuestion(id : int)
+````
 
-Retourne :
 
-  "Question supprimée avec succès." : Si la suppression a été effectuée avec succès.
+### Module **answers**
 
-  "Question  non retrouvée." : Si aucune question n'est trouvée avec l'ID donné.
-
-### Module answers
-
-**createAnswer(answer)**
+#### **createAnswer(answer)**
 
 Crée une réponse dans la base de données.
+```javascript
+createAnswer({
+   id : int, 
+   title : string, 
+   questionId : int
+})
+````
 
-createAnswer({id : int, title : string, questionId : int})
-
-Retourne :
-
-  "Réponse insérée avec succès." : Si la réponse a été créée avec succès.
-
-  "Answer exist déja." : Si une réponse avec le même ID existe déjà.
-
-**getAnswer(id)**
+#### **getAnswer(id)**
 
 Récupère une réponse par son ID.
-
+```javascript
 getAnswer(id : int)
+````
 
-Retourne :
-
-  L'objet réponse correspondant à l'ID fourni.
-
-  "Réponse non trouvée." : Si aucune réponse n'est trouvée avec l'ID donné.
-
-**updateAnswer(id, updateData)**
+#### **updateAnswer(id, updateData)**
 
 Met à jour une réponse par son ID.
+```javascript
+updateAnswer(
+    id : int, {
+      title : string,
+      questionId : int
+  }
+)
+````
 
-updateAnswer(id : int, {title : string, questionId : int})
-
-Retourne :
-
-  "Réponse mise à jour avec succès." : Si la mise à jour a été effectuée avec succès.
-
-  "Réponse non trouvée." : Si aucune réponse n'est trouvée avec l'ID donné.
-
-**deleteAnswer(id)**
+#### **deleteAnswer(id)**
 
 Supprime une réponse par son ID.
-
+```javascript
 deleteAnswer(id : int)
+````
 
-Retourne :
-
-  "Réponse supprimée avec succès." : Si la suppression a été effectuée avec succès.
-  
-  "Réponse non trouvée." : Si aucune réponse n'est trouvée avec l'ID donné.
 
 
 ## Utilisation
